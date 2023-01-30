@@ -1,4 +1,4 @@
-# Install script for directory: /Users/kwokcheong/Desktop/nus_projects/MAC_M1_StartupSPASolution/A0123456Y/Code-A0123456Y/src/spa
+# Install script for directory: /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

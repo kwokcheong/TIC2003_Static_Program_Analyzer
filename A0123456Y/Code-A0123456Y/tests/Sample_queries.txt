@@ -1,7 +1,7 @@
 1 - Procedure
 procedure p;
 Select p
-echo, readNum1
+echo
 5000
 2 - Variable
 variable v;

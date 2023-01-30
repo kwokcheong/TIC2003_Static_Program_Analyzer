@@ -1,4 +1,4 @@
-# Install script for directory: /Users/kwokcheong/Desktop/nus_projects/MAC_M1_StartupSPASolution/A0123456Y/Code-A0123456Y
+# Install script for directory: /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,17 +39,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/kwokcheong/Desktop/nus_projects/MAC_M1_StartupSPASolution/A0123456Y/Code-A0123456Y/cmake-build-debug/src/spa/cmake_install.cmake")
+  include("/Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/cmake-build-debug/src/spa/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/kwokcheong/Desktop/nus_projects/MAC_M1_StartupSPASolution/A0123456Y/Code-A0123456Y/cmake-build-debug/src/autotester/cmake_install.cmake")
+  include("/Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/cmake-build-debug/src/autotester/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/kwokcheong/Desktop/nus_projects/MAC_M1_StartupSPASolution/A0123456Y/Code-A0123456Y/cmake-build-debug/src/unit_testing/cmake_install.cmake")
+  include("/Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/cmake-build-debug/src/unit_testing/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -60,5 +60,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/kwokcheong/Desktop/nus_projects/MAC_M1_StartupSPASolution/A0123456Y/Code-A0123456Y/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

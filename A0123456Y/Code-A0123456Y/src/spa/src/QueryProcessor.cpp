@@ -40,6 +40,22 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
         Database::getVariables(databaseResults);
     }
 
+    if (synonymType == "read") {
+        Database::getReads(databaseResults);
+    }
+
+    if (synonymType == "assign") {
+        Database::getAssignments(databaseResults);
+    }
+
+    if (synonymType == "print") {
+        Database::getPrints(databaseResults);
+    }
+
+    if (synonymType == "stmt") {
+        Database::getStatements(databaseResults);
+    }
+
 	// post process the results to fill in the output vector
 	for (string databaseResult : databaseResults) {
 		output.push_back(databaseResult);

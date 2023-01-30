@@ -22,11 +22,35 @@ public:
     // method to insert a variable into the database
     static void insertVariable(string variableName);
 
+    // method to insert read lines into the database
+    static void insertRead(int lineNUM);
+
+    // method to insert read lines into the database
+    static void insertAssignment(int lineNUM);
+
+    // method to insert read lines into the database
+    static void insertPrint(int lineNUM);
+
+    // method to insert read lines into the database
+    static void insertStatement(int lineNUM);
+
 	// method to get all the procedures from the database
 	static void getProcedures(vector<string>& results);
 
     // method to get all the variables from the database
     static void getVariables(vector<string>& results);
+
+    // method to get all the variables from the database
+    static void getReads(vector<string>& results);
+
+    // method to get all the variables from the database
+    static void getAssignments(vector<string>& results);
+
+    // method to get all the variables from the database
+    static void getPrints(vector<string>& results);
+
+    // method to get all the variables from the database
+    static void getStatements(vector<string>& results);
 
 private:
 	// the connection pointer to the database
