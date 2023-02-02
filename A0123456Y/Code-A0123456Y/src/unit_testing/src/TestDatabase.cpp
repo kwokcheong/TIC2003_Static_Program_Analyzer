@@ -37,6 +37,33 @@ namespace TestDatabase {
         // The test output should match with the expected output
         // and hence the assertion would be true.
     }
+
+    TEST_CASE("CheckDatabaseProcedure") {
+        // initialize the database and insert a procedure
+        Database::initialize();
+        Database::insertProcedure("echo1");
+        Database::insertProcedure("echo2");
+
+        // retrieve the procedures from the database
+        vector<string> dbResults;
+        Database::getProcedures(dbResults);
+
+        // create the test output string from the procedures retrieved
+        string testOutput;
+        for (unsigned int i = 0; i < dbResults.size(); i++)
+        {
+            testOutput.append(dbResults.at(i) + "$");
+        }
+
+        // create the expected output string
+        string expectedOutput = "echo1$echo2$";
+
+        // compare the test output with expected output
+        require(testOutput == expectedOutput);
+
+        // The test output should match with the expected output
+        // and hence the assertion would be true.
+    }
 }
 
 
