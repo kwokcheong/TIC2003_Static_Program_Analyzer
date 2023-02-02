@@ -1,0 +1,35 @@
+1 - Procedure
+procedure p;
+Select p
+First,Second,Third
+5000
+2 - Variable
+variable v;
+Select v
+x, z, i, y, v
+5000
+3 - Constant
+constant c;
+Select c
+0, 5, 2, 1, 1, 1, 2, 5
+5000
+4 - Assignment
+assign a;
+Select a
+4, 5, 7, 9, 11, 12, 13, 14, 15, 16, 17
+5000
+5 - Print
+print pr;
+Select pr
+18
+5000
+6 - Read
+read rd;
+Select rd
+1,2
+5000
+7 - Statement
+stmt s;
+Select s
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+5000

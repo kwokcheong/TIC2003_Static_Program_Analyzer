@@ -35,21 +35,24 @@ void SourceProcessor::process(string program) {
 	tk.tokenize(program, tokens);
     vector<string> keywords { "while", "if", "for"};
     vector<string> conditional { "!", "=", ">", "<"};
+    bool constantFlag = true;
     int currentLine = 1;
-    // line num
+
     for(int i = 0; i < tokens.size(); i++){
         string current_token = tokens.at(i);
+
+        // This method counts the line num
         if(tokens.at(i) == ";" || contains(keywords, tokens.at(i))){
             currentLine += 1;
             Database::insertStatement(currentLine - 1);
         }
-        // procedure
+        // This method adds for procedure
         if(tokens.at(i) == "procedure"){
             string procedureName = tokens.at(i + 1);
             // insert the procedure into the database
             Database::insertProcedure(procedureName);
         }
-        // assignment and variables
+        // This method adds for assignment and variables
         if(tokens.at(i) == "="){
             if(!contains(conditional, tokens.at(i-1)) && tokens.at(i+1) != "="){
                 string variableName = tokens.at(i-1);
@@ -57,7 +60,7 @@ void SourceProcessor::process(string program) {
                 Database::insertAssignment(currentLine);
             }
         }
-        // read
+        // This method adds for read
         if(tokens.at(i) == "read"){
             string variableName = tokens.at(i + 1);
             // insert the variable into the database
@@ -67,8 +70,15 @@ void SourceProcessor::process(string program) {
         if(tokens.at(i) == "print"){
             Database::insertPrint(currentLine);
         }
-        // This method catches for constants
-        if(helper(tokens.at(i))){
+
+        // This method adds for constants
+        if(contains(keywords, tokens.at(i))){
+            constantFlag = false;
+        }
+        if ( tokens.at(i) == "{" ) {
+            constantFlag = true;
+        }
+        if(helper(tokens.at(i)) && constantFlag ){
             Database::insertConstants(stoi(tokens.at(i)));
         }
     }

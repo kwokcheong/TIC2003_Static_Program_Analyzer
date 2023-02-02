@@ -38,15 +38,15 @@ namespace TestDatabase {
         // and hence the assertion would be true.
     }
 
-    TEST_CASE("CheckDatabaseProcedure") {
+    TEST_CASE("CheckDatabaseVariables") {
         // initialize the database and insert a procedure
         Database::initialize();
-        Database::insertProcedure("echo1");
-        Database::insertProcedure("echo2");
+        Database::insertVariable("num1");
+        Database::insertVariable("num2");
 
         // retrieve the procedures from the database
         vector<string> dbResults;
-        Database::getProcedures(dbResults);
+        Database::getVariables(dbResults);
 
         // create the test output string from the procedures retrieved
         string testOutput;
@@ -56,7 +56,34 @@ namespace TestDatabase {
         }
 
         // create the expected output string
-        string expectedOutput = "echo1$echo2$";
+        string expectedOutput = "num1$num2$";
+
+        // compare the test output with expected output
+        require(testOutput == expectedOutput);
+
+        // The test output should match with the expected output
+        // and hence the assertion would be true.
+    }
+
+    TEST_CASE("CheckDatabaseConstants") {
+        // initialize the database and insert a procedure
+        Database::initialize();
+        Database::insertVariable("num2");
+        Database::insertVariable("num3");
+
+        // retrieve the procedures from the database
+        vector<string> dbResults;
+        Database::getVariables(dbResults);
+
+        // create the test output string from the procedures retrieved
+        string testOutput;
+        for (unsigned int i = 0; i < dbResults.size(); i++)
+        {
+            testOutput.append(dbResults.at(i) + "$");
+        }
+
+        // create the expected output string
+        string expectedOutput = "num2$num3$";
 
         // compare the test output with expected output
         require(testOutput == expectedOutput);
