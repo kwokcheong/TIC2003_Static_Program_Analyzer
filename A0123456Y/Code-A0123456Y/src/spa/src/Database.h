@@ -34,6 +34,9 @@ public:
     // method to insert read lines into the database
     static void insertStatement(int lineNUM);
 
+    // method to insert read lines into the database
+    static void insertConstants(int val);
+
 	// method to get all the procedures from the database
 	static void getProcedures(vector<string>& results);
 
@@ -51,6 +54,9 @@ public:
 
     // method to get all the variables from the database
     static void getStatements(vector<string>& results);
+
+    // method to get all the variables from the database
+    static void getConstants(vector<string>& results);
 
 private:
 	// the connection pointer to the database

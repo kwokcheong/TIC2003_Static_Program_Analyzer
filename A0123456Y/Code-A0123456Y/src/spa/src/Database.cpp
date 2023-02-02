@@ -28,7 +28,7 @@ void Database::initialize() {
     sqlite3_exec(dbConnection, createVariableTableSQL.c_str(), NULL, 0, &errorMessage);
 
     // create a constants table
-    string createConstantsTableSQL = "CREATE TABLE constants ( lineNUM INT );";
+    string createConstantsTableSQL = "CREATE TABLE constants ( value INT );";
     sqlite3_exec(dbConnection, createConstantsTableSQL.c_str(), NULL, 0, &errorMessage);
 
     // create an assignments table
@@ -93,6 +93,12 @@ void Database::insertPrint(int currentLine) {
 void Database::insertStatement(int currentLine) {
     string insertStatementSQL = "INSERT INTO statements ('lineNUM') VALUES ('" + to_string(currentLine) + "');";
     sqlite3_exec(dbConnection, insertStatementSQL.c_str(), NULL, 0, &errorMessage);
+}
+
+// method to insert a reads into the database
+void Database::insertConstants(int val) {
+    string insertConstantsSQL = "INSERT INTO constants ('value') VALUES ('" + to_string(val) + "');";
+    sqlite3_exec(dbConnection, insertConstantsSQL.c_str(), NULL, 0, &errorMessage);
 }
 
 //GETS
@@ -196,6 +202,24 @@ void Database::getStatements(vector<string> &results) {
     // The callback method is only used when there are results to be returned.
     string getStatementsSQL = "SELECT * FROM statements;";
     sqlite3_exec(dbConnection, getStatementsSQL.c_str(), callback, 0, &errorMessage);
+
+    // postprocess the results from the database so that the output is just a vector of procedure names
+    for (vector<string> dbRow : dbResults) {
+        string result;
+        result = dbRow.at(0);
+        results.push_back(result);
+    }
+}
+
+// method to get all the procedures from the database
+void Database::getConstants(vector<string> &results) {
+    // clear the existing results
+    dbResults.clear();
+
+    // retrieve the procedures from the procedure table
+    // The callback method is only used when there are results to be returned.
+    string getConstantsSQL = "SELECT * FROM constants;";
+    sqlite3_exec(dbConnection, getConstantsSQL.c_str(), callback, 0, &errorMessage);
 
     // postprocess the results from the database so that the output is just a vector of procedure names
     for (vector<string> dbRow : dbResults) {

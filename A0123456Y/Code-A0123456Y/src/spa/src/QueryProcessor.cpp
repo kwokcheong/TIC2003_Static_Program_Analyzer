@@ -56,6 +56,10 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
         Database::getStatements(databaseResults);
     }
 
+    if (synonymType == "constant") {
+        Database::getConstants(databaseResults);
+    }
+
 	// post process the results to fill in the output vector
 	for (string databaseResult : databaseResults) {
 		output.push_back(databaseResult);

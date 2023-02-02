@@ -1,9 +1,23 @@
 #include "SourceProcessor.h"
 #include <iostream>
-
+#include <ctype.h>
+#include <string>
 using namespace std;
 
 // method for processing the source program
+bool helper(string text){
+    try {
+        if(stoi(text) >= 0){
+            if(text[0] == '0' && text.length() > 1){
+                return false;
+            } else {
+                return true;
+            }
+        }
+    } catch(...) {
+        return false;
+    }
+};
 
 void SourceProcessor::process(string program) {
 	// initialize the database
@@ -16,8 +30,9 @@ void SourceProcessor::process(string program) {
 
     int currentLine = 0;
     for(int i = 0; i < tokens.size(); i++){
+        string current_token = tokens.at(i);
         if(tokens.at(i) == "{" || tokens.at(i) == ";"){
-            currentLine += 1;
+            currentLine ++;
         }
         if(tokens.at(i) == "procedure"){
             string procedureName = tokens.at(i + 1);
@@ -41,6 +56,10 @@ void SourceProcessor::process(string program) {
         if(tokens.at(i) == "print"){
             Database::insertPrint(currentLine);
             Database::insertStatement(currentLine);
+        }
+        // This method catches for constants
+        if(helper(tokens.at(i))){
+            Database::insertConstants(stoi(tokens.at(i)));
         }
     }
 }
