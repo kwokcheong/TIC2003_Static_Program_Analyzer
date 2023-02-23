@@ -1,56 +1,56 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>autotester</name><parsing_time_taken>9.812000</parsing_time_taken>
+<name>autotester</name><parsing_time_taken>16.605000</parsing_time_taken>
 </info>
 <queries>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Procedure">1</id><querystr><![CDATA[procedure p; Select p]]></querystr>
-<stuans>echo</stuans>
-<correct>echo</correct>
-<time_taken>0.482000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify procedures">1001</id><querystr><![CDATA[procedure proc; Select proc]]></querystr>
+<stuans>initiateTesla</stuans>
+<correct>initiateTesla</correct>
+<time_taken>0.420000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Variable">2</id><querystr><![CDATA[variable v; Select v]]></querystr>
-<stuans>num1,index</stuans>
-<correct>num1,index</correct>
-<time_taken>0.351000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify variables">1002</id><querystr><![CDATA[variable v; Select v]]></querystr>
+<stuans>timeElapse,batteryLevel,MemoryLOC001,POWERUL100,TPressure,DataFP,MemoryLOC254,Odometer,VehicleHealth</stuans>
+<correct>timeElapse,batteryLevel,MemoryLOC001,POWERUL100,TPressure,DataFP,MemoryLOC254,Odometer,VehicleHealth</correct>
+<time_taken>0.393000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Constant">3</id><querystr><![CDATA[constant c; Select c]]></querystr>
-<stuans></stuans>
-<correct></correct>
-<time_taken>0.328000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify statements">1003</id><querystr><![CDATA[stmt Stm; Select Stm]]></querystr>
+<stuans>1,2,3,4,5,6,7,8,9,10,11,12</stuans>
+<correct>1,2,3,4,5,6,7,8,9,10,11,12</correct>
+<time_taken>0.486000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Assignment">4</id><querystr><![CDATA[assign a; Select a]]></querystr>
-<stuans>2</stuans>
-<correct>2</correct>
-<time_taken>0.360000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify assignments">1004</id><querystr><![CDATA[assign a; Select a]]></querystr>
+<stuans>1,5,7,9,11</stuans>
+<correct>1,5,7,9,11</correct>
+<time_taken>0.376000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Print">5</id><querystr><![CDATA[print pr; Select pr]]></querystr>
-<stuans>3,4</stuans>
-<correct>3,4</correct>
-<time_taken>0.403000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify print statements">1005</id><querystr><![CDATA[print PrintOut; Select PrintOut]]></querystr>
+<stuans>3,10,12</stuans>
+<correct>3,10,12</correct>
+<time_taken>0.370000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Read">6</id><querystr><![CDATA[read rd; Select rd]]></querystr>
-<stuans>1</stuans>
-<correct>1</correct>
-<time_taken>0.386000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify constants">1006</id><querystr><![CDATA[constant Const; Select Const]]></querystr>
+<stuans>0,80</stuans>
+<correct>0,80</correct>
+<time_taken>0.372000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Statement">7</id><querystr><![CDATA[stmt s; Select s]]></querystr>
-<stuans>1,2,3,4</stuans>
-<correct>1,2,3,4</correct>
-<time_taken>0.343000</time_taken>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="identify read statements">1007</id><querystr><![CDATA[read r; Select r]]></querystr>
+<stuans>2,4,6,8</stuans>
+<correct>2,4,6,8</correct>
+<time_taken>0.332000</time_taken>
 <passed/>
 </query>
 </queries>
