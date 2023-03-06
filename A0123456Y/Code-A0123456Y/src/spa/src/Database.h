@@ -16,47 +16,41 @@ public:
 	// method to close the database connection
 	static void close();
 
-	// method to insert a procedure into the database
+	// method to insert
 	static void insertProcedure(string procedureName);
 
-    // method to insert a variable into the database
-    static void insertVariable(string variableName);
+    static void insertVariable(string variableName, string procedureName);
 
-    // method to insert read lines into the database
     static void insertRead(int lineNUM);
 
-    // method to insert read lines into the database
     static void insertAssignment(int lineNUM);
 
-    // method to insert read lines into the database
     static void insertPrint(int lineNUM);
 
-    // method to insert read lines into the database
-    static void insertStatement(int lineNUM);
+    static void insertStatement(int currentLine, string statementType, int procedureId, int variableId, int constantId, string expressionValue, int parent_line_num);
 
-    // method to insert read lines into the database
-    static void insertConstants(int val);
+    static void insertConstants(int lineNum, int val);
 
-	// method to get all the procedures from the database
+	// method to get
 	static void getProcedures(vector<string>& results);
 
-    // method to get all the variables from the database
     static void getVariables(vector<string>& results);
 
-    // method to get all the variables from the database
     static void getReads(vector<string>& results);
 
-    // method to get all the variables from the database
     static void getAssignments(vector<string>& results);
 
-    // method to get all the variables from the database
     static void getPrints(vector<string>& results);
 
-    // method to get all the variables from the database
     static void getStatements(vector<string>& results);
 
-    // method to get all the variables from the database
     static void getConstants(vector<string>& results);
+
+    static int getProcedureId(int &result, string procedureName);
+
+    static int getVariableId(int &result, string variableName, string procedureName);
+
+    static int getConstantId(int &result, int lineNum);
 
 private:
 	// the connection pointer to the database

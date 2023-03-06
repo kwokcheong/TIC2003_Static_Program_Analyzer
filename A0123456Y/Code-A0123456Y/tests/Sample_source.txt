@@ -5,3 +5,8 @@ procedure echo {
     print num1;
     print index;
 }
+
+procedure echo2{
+    read num2;
+    index = 2;
+}
