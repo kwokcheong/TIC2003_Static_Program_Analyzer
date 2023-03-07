@@ -251,7 +251,6 @@ int Database::getVariableId(int &result, string variableName, string procedureNa
     dbResults.clear();
 
     string getVariableIdSQL = "SELECT id FROM variables WHERE variable_name = '" + variableName + "' AND procedure_name = '" + procedureName + "';";
-    cout << "THIS IS THE STRING FROM DB GET: " << getVariableIdSQL << endl;
     sqlite3_exec(dbConnection, getVariableIdSQL.c_str(), callback, 0, &errorMessage);
 
     for (vector<string> dbRow : dbResults) {

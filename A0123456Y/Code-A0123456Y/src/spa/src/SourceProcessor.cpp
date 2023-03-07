@@ -1,7 +1,7 @@
 #include "SourceProcessor.h"
 #include <iostream>
-#include <ctype.h>
 #include <string>
+#include <stack>
 #include <algorithm>
 using namespace std;
 
@@ -17,6 +17,7 @@ bool isNumber(string text){
     } catch(...) {
         return false;
     }
+    return false;
 };
 
 template<typename C, typename T>
@@ -38,7 +39,6 @@ int getDatabaseId(int x, int lineNum, string procedureName, string variableName)
             return result;
         case 1: // 1 : Variable
             result = Database::getVariableId(result, variableName, procedureName);
-            cout << "THIS IS THE RESULT FROM getProcedureId QUERY: " << result << endl;
             return result;
         case 2: // 2 : Constant
             result = Database::getConstantId(result, lineNum);
@@ -58,25 +58,61 @@ void SourceProcessor::process(string program) {
 
     // Initialize standard variables
     vector<string> keywords { "while", "if"};
-    vector<string> conditional { "!", "=", ">", "<" };
-    vector<string> arithmetics { "%", "*", "+", "-" };
+    vector<string> conditional { "!", "=", ">", "<", "%", "*", "+", "-"  };
     bool constantFlag = true;
     int constantValue = -1;
     int currentLine = 1;
+    int parentLine = 0;
+    stack<int> parentStack;
+    stack<int> ifStatementStack;
     string procedureName, variableName, statementType, expressionValue  = "";
 
     // Note to self: I want to make this a switch case instead, but can do it next iteration
     for(int i = 0; i < tokens.size(); i++){
         string current_token = tokens.at(i);
 
+        // This method adds for constants
+        // Check if while, if (), block the ( x > 3 ) part
+        if(contains(keywords, tokens.at(i))){
+            statementType = tokens.at(i);
+            variableName = "";
+            constantValue = -1;
+            //parentLine = currentLine;
+            constantFlag = false;
+
+            if(tokens.at(i+1) == "("){
+                expressionValue = tokens.at(i+1);
+                int flag = 1;
+                int j = 1;
+                while(flag > 0){
+                    if(tokens.at(i+j+1) == "(") { flag++; }
+                    if(tokens.at(i+j+1) == ")") { flag--; }
+                    expressionValue += tokens.at(i+j+1);
+                    j++;
+                }
+            }
+        }
+
+        if(tokens.at(i) == "else"){
+            parentStack.push(ifStatementStack.top());
+            ifStatementStack.pop();
+        }
+
         if(tokens.at(i) == ";" || contains(keywords, tokens.at(i))){
-            if(contains(keywords, tokens.at(i))) { statementType = tokens.at(i); }
             int procedure_id = getDatabaseId(0,currentLine, procedureName, variableName);
             int variable_id = (variableName != "") ? getDatabaseId(1,currentLine, procedureName, variableName) : -1;
             int constant_id = (constantValue > -1) ? getDatabaseId(2, currentLine, procedureName, variableName) : -1;
-            Database::insertStatement(currentLine, statementType, procedure_id, variable_id, constant_id, expressionValue, 0);
+            parentLine = parentStack.size() > 0 ? parentStack.top() : 0;
+            Database::insertStatement(currentLine, statementType, procedure_id, variable_id, constant_id, expressionValue, parentLine);
+            if(contains(keywords, tokens.at(i))) {
+                if(tokens.at(i) == "if"){
+                    ifStatementStack.push(currentLine);
+                }
+                parentStack.push(currentLine);
+            }
             currentLine += 1;
             statementType = "";
+            expressionValue = "";
             constantValue = -1;
         }
 
@@ -90,8 +126,14 @@ void SourceProcessor::process(string program) {
 
         // This method adds for assignment and variables
         if(tokens.at(i) == "="){
-            // add expression logic here
             if(!contains(conditional, tokens.at(i-1)) && tokens.at(i+1) != "="){
+                if(tokens.at(i+2) != ";") {
+                    int j = 1;
+                    while (tokens.at(i + j) != ";") {
+                        expressionValue += tokens.at(i+j);
+                        j++;
+                    }
+                }
                 variableName = tokens.at(i-1);
                 if(!variableExists(variableName, procedureName)) { Database::insertVariable(variableName, procedureName); };
                 Database::insertAssignment(currentLine);
@@ -121,19 +163,15 @@ void SourceProcessor::process(string program) {
             statementType = tokens.at(i);
         }
 
-        // This method adds for constants
-        // Check if while, for, if (), block the ( x > 3 ) part
-        if(contains(keywords, tokens.at(i))){
-            variableName = "";
-            constantValue = -1;
-            constantFlag = false;
-
-            // add expression here
-        }
-
         // once while() { , then unblock
         if ( tokens.at(i) == "{" ) {
             constantFlag = true;
+        }
+
+        if(!parentStack.empty()){
+            if(tokens.at(i) == "}"){
+                parentStack.pop();
+            }
         }
 
         if(isNumber(tokens.at(i)) && constantFlag ) {
