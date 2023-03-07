@@ -7,7 +7,7 @@ procedure readPoint {
     read x;
     read y;
 }
-procedure print1Results {
+procedure printResults {
     print flag;
     print cenX;
     print cenY;

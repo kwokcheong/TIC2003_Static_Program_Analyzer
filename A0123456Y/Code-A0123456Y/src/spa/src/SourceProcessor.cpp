@@ -25,9 +25,18 @@ bool contains(C&& c, T e) {
     return find(begin(c), end(c), e) != end(c);
 };
 
+bool procedureExists(string procedureName){
+    int result = Database::getProcedureId(result, procedureName) > 0 ? 1 : 0;
+    return result;
+}
+
 bool variableExists(string variableName, string procedureName){
-    int result;
-    result = Database::getVariableId(result, variableName, procedureName) > 0 ? 1 : 0;
+    int result = Database::getVariableId(result, variableName, procedureName) > 0 ? 1 : 0;
+    return result;
+}
+
+bool constantExists(int lineNum){
+    int result = Database::getConstantId(result, lineNum) > 0 ? 1 : 0;
     return result;
 }
 
@@ -35,14 +44,26 @@ int getDatabaseId(int x, int lineNum, string procedureName, string variableName)
     int result;
     switch(x){
         case 0: // 0 : Procedure
-            result = Database::getProcedureId(result, procedureName);
-            return result;
+            if(procedureExists(procedureName)) {
+                result = Database::getProcedureId(result, procedureName);
+                return result;
+            } else {
+                return -1;
+            }
         case 1: // 1 : Variable
-            result = Database::getVariableId(result, variableName, procedureName);
-            return result;
+            if(variableExists(variableName, procedureName)){
+                result = Database::getVariableId(result, variableName, procedureName);
+                return result;
+            } else {
+                return -1;
+            }
         case 2: // 2 : Constant
-            result = Database::getConstantId(result, lineNum);
-            return result;
+            if(constantExists(lineNum)){
+                result = Database::getConstantId(result, lineNum);
+                return result;
+            } else {
+                return -1;
+            }
         default: return -1;
     }
 }
@@ -155,11 +176,13 @@ void SourceProcessor::process(string program) {
         if(tokens.at(i) == "print"){
             constantValue = -1;
             statementType = tokens.at(i);
+            variableName = tokens.at(i+1);
             Database::insertPrint(currentLine);
         }
 
         if(tokens.at(i) == "call"){
             constantValue = -1;
+            variableName = "";
             statementType = tokens.at(i);
         }
 
