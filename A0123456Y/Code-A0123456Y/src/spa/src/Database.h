@@ -71,13 +71,23 @@ public:
 
     static void getProcedureNamesIfUses(vector<string>& results, map<string, string>& myMap);
 
+    static void getStatementsIfModifies(vector<string>& results, map<string, string>& myMap);
+
+    static void getProcedureNamesIfModifies(vector<string>& results, map<string, string>& myMap);
+
     static bool parent(int lineNum1, int lineNum2);
+
     static bool parent(string procedureName, int lineNum2);
 
     static bool parentT(int lineNum1, int lineNum2);
 
     static bool uses(int lineNum, string variableName);
+
     static bool uses(string procedureName, string variableName);
+
+    static bool modifies(int lineNum, string variableName);
+
+    static bool modifies(string procedureName, string variableName);
 
 private:
 	// the connection pointer to the database

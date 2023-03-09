@@ -549,6 +549,50 @@ void Database::getProcedureNamesIfUses(vector<string>& results, map<string, stri
     }
 };
 
+void Database::getStatementsIfModifies(vector<string>& results, map<string, string>& myMap){
+    dbResults.clear();
+    vector<string> keywords { "while", "if", "assign", "read", "print" };
+    vector<string> keys;
+    vector<int> ids;
+
+    // this gets the keys ie: while, if, assign, read, print : it will not store procedure if it sees it
+    for (auto const& [key, val] : myMap) {
+        if(contains(keywords, key)){
+            keys.push_back(key);
+        }
+    }
+
+    string getStatementIDs = "SELECT id FROM statements where statement_type = '" + keys.at(0) + "';";
+    sqlite3_exec(dbConnection, getStatementIDs.c_str(), callback, 0, &errorMessage);
+
+    for (vector<string> dbRow: dbResults) {
+        int id;
+        id = stoi(dbRow.at(0));
+        ids.push_back(id);
+    }
+
+    for (auto it : ids) {
+        if(Database::modifies(it, myMap["value"])){
+            results.push_back(to_string(it));
+        }
+    }
+};
+
+void Database::getProcedureNamesIfModifies(vector<string>& results, map<string, string>& myMap){
+// procedure p; variable v;
+    dbResults.clear();
+    vector<string> procedure_names;
+    Database::getProcedures(procedure_names);
+    dbResults.clear();
+
+    for(auto procedure_name : procedure_names){
+        if(Database::modifies(procedure_name, myMap["value"])){
+            results.push_back(procedure_name);
+        }
+    }
+};
+
+
 
 // DB ABSTRACTION METHODS
 bool Database::parent(int lineNum1, int lineNum2){
@@ -651,13 +695,12 @@ bool Database::uses(int lineNum, string variableName) {
             sqlite3_exec(dbConnection, getStatementsSQL.c_str(), callback, 0, &errorMessage);
 
             for (int i = lineNum; i < dbResults.size(); i++) {
-                if(dbResults.at(i).at(1) == "read" || dbResults.at(i).at(1) == "print"){
-                    if(stoi(dbResults.at(i).at(3)) == target_variable_id){
-                        return 1;
-                    }
-                }
-
                 if(stoi(dbResults.at(i).at(6)) >= lineNum){
+                    if(dbResults.at(i).at(1) == "read" || dbResults.at(i).at(1) == "print"){
+                        if(stoi(dbResults.at(i).at(3)) == target_variable_id){
+                            return 1;
+                        }
+                    }
                     tokens.clear();
                     if(dbResults.at(i).at(5) != ""){
                         tk.tokenize(dbResults.at(i).at(5), tokens);
@@ -665,6 +708,8 @@ bool Database::uses(int lineNum, string variableName) {
                             return 1;
                         }
                     }
+                } else {
+                    break;
                 }
             }
         }
@@ -706,7 +751,73 @@ bool Database::uses(string procedureName, string variableName) {
     return 0;
 }
 
-// modifies
+bool Database::modifies(int lineNum, string variableName) {
+    dbResults.clear();
+
+    string getStatementRow = "SELECT * FROM statements WHERE id = '" + to_string(lineNum) + "';";
+    sqlite3_exec(dbConnection, getStatementRow.c_str(), callback, 0, &errorMessage);
+
+    Tokenizer tk;
+    vector<string> tokens, output;
+    for (vector<string> dbRow : dbResults) {
+        string row;
+        for(auto it : dbRow){
+            row = it;
+            output.push_back(row);
+        }
+    }
+    int target_variable_id = 0;
+    Database::getVariableId(target_variable_id, variableName);
+    dbResults.clear();
+
+    if(output.at(1) == "read" || output.at(1) == "assign"){
+        if(stoi(output.at(3)) == target_variable_id){
+            return 1;
+        }
+    }
+
+    if(output.at(1) == "if" || output.at(1) == "while"){
+        dbResults.clear();
+        string getStatementsSQL = "SELECT * FROM statements;";
+        sqlite3_exec(dbConnection, getStatementsSQL.c_str(), callback, 0, &errorMessage);
+
+        for (int i = lineNum; i < dbResults.size(); i++) {
+            if(stoi(dbResults.at(i).at(6)) >= lineNum) {
+                if (dbResults.at(i).at(1) == "read" || dbResults.at(i).at(1) == "assign") {
+                    if (stoi(dbResults.at(i).at(3)) == target_variable_id) {
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+bool Database::modifies(string procedureName, string variableName) {
+    dbResults.clear();
+    Tokenizer tk;
+    vector<string> tokens;
+    int id = 0;
+    Database::getProcedureId(id, procedureName);
+    dbResults.clear();
+
+    int target_variable_id = 0;
+    Database::getVariableId(target_variable_id, variableName);
+    dbResults.clear();
+
+    string getStatementIds = "SELECT * FROM statements WHERE procedure_id = '" + to_string(id) + "';";
+    sqlite3_exec(dbConnection, getStatementIds.c_str(), callback, 0, &errorMessage);
+
+    for(vector<string> row : dbResults){
+        if(row.at(1) == "read" || row.at(1) == "assign"){
+            if(stoi(row.at(3)) == target_variable_id){
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 // callback method to put one row of results from the database into the dbResults vector
 // This method is called each time a row of results is returned from the database

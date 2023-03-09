@@ -38,8 +38,23 @@ assign a;
 Select a pattern a(_,_"cenX * cenX"_)
 26
 5000
-6 - Getting all lines that uses the variable in the procedure [value]
+9 - Getting all statements that appears as part of the condition OR within the while/if loop [value]
+if i; variable v;
+Select i such that Modifies(i,"flagTrue")
+19
+5000
+10 - Getting all statements that appears on the left side of a [value]
+assign a; variable v;
+Select a such that Modifies(a,"cenX")
+12,17,24
+5000
+11 - Getting all statements that modifies x
+read r; variable v;
+Select a such that Modifies(r,"x")
+5
+5000
+12 - Getting all procedure that uses the variable in the procedure [value]
 procedure p; variable v;
-Select v such that Uses("computeCentroid,"cenY")
-print1Results, computeCentroid
+Select p such that Modifies(p,"cenY")
+computeCentroid
 5000

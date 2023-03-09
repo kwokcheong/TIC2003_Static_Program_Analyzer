@@ -54,6 +54,16 @@ void retrieveDatabase(string command, string synonym, map<string, string>& myMap
         }
     }
 
+    if(command == "modifies") {
+        // assumes that you want procedures
+        if(synonym == "procedure"){
+            Database::getProcedureNamesIfModifies(databaseResults, myMap);
+        }else {
+            cout << "YOU ARE HERE" << endl;
+            Database::getStatementsIfModifies(databaseResults, myMap);
+        }
+    }
+
 
 
     if(command == "all"){
@@ -144,11 +154,12 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
                 synonymLine.clear();
             }
             if(tokens.at(i+1) == "Modifies"){
-                if(tokens.at(i+2) == "*"){
-                    //this is parent*()
-                } else {
-                    // this is parent()
-                }
+                command = "modifies";
+                synonymLine.clear();
+                synonymLine.push_back("value");
+                synonymLine.push_back(tokens.at(i+6));
+                addToMap(myMap, synonymLine);
+                synonymLine.clear();
             }
 
         }
