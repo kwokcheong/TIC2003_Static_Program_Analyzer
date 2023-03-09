@@ -5,8 +5,8 @@ Select a such that Parent*("computeCentroid",a)
 5000
 2 - Getting all assignments within While [stmtLine]
 assign a; while w;
-Select a such that Parent*(w,a)
-16,17,18,20
+Select a such that Parent(w,a)
+16,17,18
 5000
 3 - Getting all assignments within If [stmtLine]
 assign a; if i;
@@ -21,12 +21,12 @@ Select i such that Uses(i,"count")
 5 - Getting all statements that appears on the right side of a [value]
 assign a; variable v;
 Select a such that Uses(a,"cenX")
-1,2,3
+17,24,26
 5000
 6 - Getting all procedure that uses the variable in the procedure [value]
 procedure p; variable v;
 Select p such that Uses(p,"cenY")
-computeCentroid
+print1Results, computeCentroid
 5000
 7 - Pattern exact match (LHS)
 assign a;
@@ -37,4 +37,9 @@ Select a pattern a("cenX",_)
 assign a;
 Select a pattern a(_,_"cenX * cenX"_)
 26
+5000
+6 - Getting all lines that uses the variable in the procedure [value]
+procedure p; variable v;
+Select v such that Uses("computeCentroid,"cenY")
+print1Results, computeCentroid
 5000

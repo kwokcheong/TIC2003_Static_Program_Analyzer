@@ -2,6 +2,7 @@
 #include "Tokenizer.h"
 #include <iostream>
 #include <map>
+#include <cctype>
 
 using namespace std;
 
@@ -11,10 +12,64 @@ QueryProcessor::QueryProcessor() {}
 // destructor
 QueryProcessor::~QueryProcessor() {}
 
-// method to evaluate a query
-// This method currently only handles queries for getting all the procedure names,
-// using some highly simplified logic.
-// You should modify this method to complete the logic for handling all required queries.
+// helper method to evaluate a query
+template<typename C, typename T>
+bool contains(C&& c, T e) {
+    return find(begin(c), end(c), e) != end(c);
+};
+
+string toLower(std::string str) {
+    for (auto& c : str) {
+        c = std::tolower(c);
+    }
+    return str;
+}
+
+void addToMap(map<string, string>& myMap, vector<string> synonymLine){
+    string name;
+    for(int i=1; i<synonymLine.size(); i++){
+        name += synonymLine.at(i);
+    }
+    myMap.insert(pair<string, string>(synonymLine.at(0), name));
+}
+
+void retrieveDatabase(string command, string synonym, map<string, string>& myMap, vector<string>& databaseResults ){
+    if(command == "parentT") {
+        for (const auto& [key, value] : myMap) {
+            std::cout << "Key: " << key << ", Value: " << value << std::endl;
+        }
+        Database::getStatementsIfParentT(databaseResults, myMap);
+    }
+
+    if(command == "parent") {
+        Database::getStatementsIfParent(databaseResults, myMap);
+    }
+
+    if(command == "uses") {
+        // assumes that you want procedures
+        if(synonym == "procedure"){
+            Database::getProcedureNamesIfUses(databaseResults, myMap);
+        }else {
+            Database::getStatementsIfUses(databaseResults, myMap);
+        }
+    }
+
+
+
+    if(command == "all"){
+        if(synonym == "procedure"){ Database::getProcedures(databaseResults); }
+        if(synonym == "variable"){ Database::getVariables(databaseResults);}
+        if(synonym == "read"){ Database::getReads(databaseResults); }
+        if(synonym == "assign"){ Database::getAssignments(databaseResults); }
+        if(synonym == "print"){ Database::getPrints(databaseResults); }
+        if(synonym == "stmt"){ Database::getStatements(databaseResults); }
+        if(synonym == "constant"){ Database::getConstants(databaseResults); }
+        if(synonym == "if"){ Database::getIfStatementIds(databaseResults); }
+        if(synonym == "while"){ Database::getWhileStatementIds(databaseResults);
+        }
+    }
+}
+
 void QueryProcessor::evaluate(string query, vector<string>& output) {
 	// clear the output vector
 	output.clear();
@@ -22,6 +77,7 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
 	// tokenize the query
 	Tokenizer tk;
 	vector<string> tokens;
+    map<string, string> myMap;
 	tk.tokenize(query, tokens);
 
 	// check what type of synonym is being declared
@@ -29,38 +85,83 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
 
 	// create a vector for storing the results from database
 	vector<string> databaseResults;
+    vector<string> synonymLine;
+    vector<string> skip = { ";", "such", "that"};
+    int selectIndex = 0;
+
+    // create the base map body for calling database get requests
+    for(int i = 0; i<tokens.size(); i++){
+        synonymLine.push_back(tokens[i]);
+        if(tokens[i+1] == ";"){ // this will add all the synonyms
+            i++;
+            addToMap(myMap, synonymLine);
+            synonymLine.clear();
+        }
+
+        if(tokens.at(i) == "select"){ // this will add the select statement
+            synonymLine.clear();
+            synonymLine.push_back(tokens.at(i));
+            synonymLine.push_back(tokens.at(i+1));
+            addToMap(myMap, synonymLine);
+            synonymLine.clear();
+            selectIndex = i;
+        }
+
+    }
+
+    // evaluate select statement
+    string command = "all";
+    for(int i = selectIndex; i<tokens.size(); i++){
+        //iteration 2 remains simple. To handle for only 1 abstraction.
+        if(tokens.at(i) == "that"){
+            if(tokens.at(i+1) == "Parent"){
+                if(tokens.at(i+2) == "*"){
+                    command = "parentT";
+                    if(tokens.at(i+4) == "\""){
+                        synonymLine.clear();
+                        synonymLine.push_back("value");
+                        synonymLine.push_back(tokens.at(i+5));
+                        addToMap(myMap, synonymLine);
+                        synonymLine.clear();
+                    }
+                } else {
+                    command = "parent";
+                    if(tokens.at(i+3) == "\""){
+                        synonymLine.clear();
+                        synonymLine.push_back("value");
+                        synonymLine.push_back(tokens.at(i+5));
+                        addToMap(myMap, synonymLine);
+                        synonymLine.clear();
+                    }
+                }
+            }
+            if(tokens.at(i+1) == "Uses"){
+                command = "uses";
+                synonymLine.clear();
+                synonymLine.push_back("value");
+                synonymLine.push_back(tokens.at(i+6));
+                addToMap(myMap, synonymLine);
+                synonymLine.clear();
+            }
+            if(tokens.at(i+1) == "Modifies"){
+                if(tokens.at(i+2) == "*"){
+                    //this is parent*()
+                } else {
+                    // this is parent()
+                }
+            }
+
+        }
+        if(tokens.at(i) == "Pattern"){
+            // do something
+        }
+    }
 
 	// call the method in database to retrieve the results
-	// This logic is highly simplified based on iteration 1 requirements and 
-	// the assumption that the queries are valid.
-	if (synonymType == "procedure") {
-        Database::getProcedures(databaseResults);
-	}
+    retrieveDatabase(command, synonymType, myMap, databaseResults);
 
-    if (synonymType == "variable") {
-        Database::getVariables(databaseResults);
-    }
-
-    if (synonymType == "read") {
-        Database::getReads(databaseResults);
-    }
-
-    if (synonymType == "assign") {
-        //if (xxx == "while", 'if', 'procedure'){
-
-        Database::getAssignments(databaseResults);
-    }
-
-    if (synonymType == "print") {
-        Database::getPrints(databaseResults);
-    }
-
-    if (synonymType == "stmt") {
-        Database::getStatements(databaseResults);
-    }
-
-    if (synonymType == "constant") {
-        Database::getConstants(databaseResults);
+    for (const auto& [key, value] : myMap) {
+        std::cout << "Key: " << key << ", Value: " << value << std::endl;
     }
 
 	// post process the results to fill in the output vector

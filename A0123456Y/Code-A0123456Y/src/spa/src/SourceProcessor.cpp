@@ -214,23 +214,23 @@ void SourceProcessor::process(string program) {
     //parentMap.insert(std::pair<std::string, string>("while", "w"));
     //parentMap.insert(std::pair<std::string, string>("select", "a"));
 
-    //Database::getStatementsIfParent(databaseResults, parentMap);
+    //Database::getStatementsIfParentT(databaseResults, parentMap);
 
 
-    //map<std::string, string> prodMap;
-    //prodMap.insert(std::pair<std::string, string>("assign", "a"));
-    //prodMap.insert(std::pair<std::string, string>("procedure", "p"));
-    //prodMap.insert(std::pair<std::string, string>("select", "a"));
-    //prodMap.insert(std::pair<std::string, string>("value", "computeCentroid"));
+    map<std::string, string> prodMap;
+    prodMap.insert(std::pair<std::string, string>("if", "i"));
+    prodMap.insert(std::pair<std::string, string>("variable", "v"));
+    prodMap.insert(std::pair<std::string, string>("select", "i"));
+    prodMap.insert(std::pair<std::string, string>("value", "count"));
 
-    //Database::getStatementsIfParentT(databaseResults, prodMap);
+    Database::getStatementsIfUses(databaseResults, prodMap);
 
-    map<std::string, string> usesMap;
-    usesMap.insert(std::pair<std::string, string>("if", "i"));
-    usesMap.insert(std::pair<std::string, string>("variable", "v"));
-    usesMap.insert(std::pair<std::string, string>("select", "i"));
-    usesMap.insert(std::pair<std::string, string>("value", "cenX"));
+    //map<std::string, string> usesMap;
+    //usesMap.insert(std::pair<std::string, string>("assign", "a"));
+    //usesMap.insert(std::pair<std::string, string>("variable", "v"));
+    //usesMap.insert(std::pair<std::string, string>("select", "a"));
+    //usesMap.insert(std::pair<std::string, string>("value", "cenX"));
 
-    Database::getProcedureNamesIfUses(databaseResults, usesMap);
+    //Database::getStatementsIfUses(databaseResults, usesMap);
 
 }

@@ -138,7 +138,7 @@ void Database::getVariables(vector<string>& results){
 
     for (vector<string> dbRow : dbResults) {
         string result;
-        result = dbRow.at(1);
+        result = dbRow.at(0);
         results.push_back(result);
     }
 }
@@ -535,7 +535,6 @@ void Database::getStatementsIfUses(vector<string>& results, map<string, string>&
     }
 };
 
-//Getting all procedure that uses the variable in the procedure [value]
 void Database::getProcedureNamesIfUses(vector<string>& results, map<string, string>& myMap){
 // procedure p; variable v;
     dbResults.clear();
@@ -547,11 +546,6 @@ void Database::getProcedureNamesIfUses(vector<string>& results, map<string, stri
         if(Database::uses(procedure_name, myMap["value"])){
             results.push_back(procedure_name);
         }
-    }
-
-    cout << "start" << endl;
-    for(auto ans : results){
-        cout << ans << endl;
     }
 };
 
