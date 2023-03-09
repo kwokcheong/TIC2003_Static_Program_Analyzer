@@ -206,31 +206,4 @@ void SourceProcessor::process(string program) {
             Database::insertConstants(currentLine, stoi(tokens.at(i)));
         }
     }
-
-    // TODO Test your code here
-    vector<string> databaseResults;
-    //map<std::string, string> parentMap;
-    //parentMap.insert(std::pair<std::string, string>("assign", "a"));
-    //parentMap.insert(std::pair<std::string, string>("while", "w"));
-    //parentMap.insert(std::pair<std::string, string>("select", "a"));
-
-    //Database::getStatementsIfParentT(databaseResults, parentMap);
-
-
-    map<std::string, string> prodMap;
-    prodMap.insert(std::pair<std::string, string>("if", "i"));
-    prodMap.insert(std::pair<std::string, string>("variable", "v"));
-    prodMap.insert(std::pair<std::string, string>("select", "i"));
-    prodMap.insert(std::pair<std::string, string>("value", "count"));
-
-    Database::getStatementsIfUses(databaseResults, prodMap);
-
-    //map<std::string, string> usesMap;
-    //usesMap.insert(std::pair<std::string, string>("assign", "a"));
-    //usesMap.insert(std::pair<std::string, string>("variable", "v"));
-    //usesMap.insert(std::pair<std::string, string>("select", "a"));
-    //usesMap.insert(std::pair<std::string, string>("value", "cenX"));
-
-    //Database::getStatementsIfUses(databaseResults, usesMap);
-
 }
