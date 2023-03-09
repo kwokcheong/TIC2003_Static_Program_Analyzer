@@ -59,12 +59,9 @@ void retrieveDatabase(string command, string synonym, map<string, string>& myMap
         if(synonym == "procedure"){
             Database::getProcedureNamesIfModifies(databaseResults, myMap);
         }else {
-            cout << "YOU ARE HERE" << endl;
             Database::getStatementsIfModifies(databaseResults, myMap);
         }
     }
-
-
 
     if(command == "all"){
         if(synonym == "procedure"){ Database::getProcedures(databaseResults); }

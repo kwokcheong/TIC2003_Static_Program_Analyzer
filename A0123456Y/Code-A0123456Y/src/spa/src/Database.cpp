@@ -284,12 +284,6 @@ void Database::getConstantId(int &result, int lineNum) {
     }
 }
 
-//void Database::getParentAssign(vector<string>& results){
-//select all the ids of assignment a[1,2,3]
-//select all the ids of while/if/procedure  w[1,2,3]
-// loop through and call parent(w, a)
-//if true, push back the id into result
-
 void Database::getStatementsIfParent(vector<string> &results, map<string, string>& myMap){
     dbResults.clear();
     vector<string> keywords { "while", "if", "assign", "read", "print" };
@@ -591,8 +585,6 @@ void Database::getProcedureNamesIfModifies(vector<string>& results, map<string, 
         }
     }
 };
-
-
 
 // DB ABSTRACTION METHODS
 bool Database::parent(int lineNum1, int lineNum2){
