@@ -3,6 +3,11 @@
 #include <string>
 #include <vector>
 #include "sqlite3.h"
+#include <iostream>
+#include <stack>
+#include <algorithm>
+#include "Tokenizer.h"
+#include <map>
 
 using namespace std;
 
@@ -10,16 +15,16 @@ using namespace std;
 // It is advisable to just add the insert / get functions based on the given examples.
 class Database {
 public:
-	// method to connect to the database and initialize tables in the database
+	// INITIALIZE DB
 	static void initialize();
 
-	// method to close the database connection
+	// CLOSE DB
 	static void close();
 
-	// method to insert
+	// INSERT DB
 	static void insertProcedure(string procedureName);
 
-    static void insertVariable(string variableName, string procedureName);
+    static void insertVariable(string variableName);
 
     static void insertRead(int lineNUM);
 
@@ -31,7 +36,7 @@ public:
 
     static void insertConstants(int lineNum, int val);
 
-	// method to get
+	// GET DB
 	static void getProcedures(vector<string>& results);
 
     static void getVariables(vector<string>& results);
@@ -46,11 +51,33 @@ public:
 
     static void getConstants(vector<string>& results);
 
-    static int getProcedureId(int &result, string procedureName);
+    static void getIfStatementIds(vector<string> &results);
 
-    static int getVariableId(int &result, string variableName, string procedureName);
+    static void getWhileStatementIds(vector<string> &results);
 
-    static int getConstantId(int &result, int lineNum);
+    static void getProcedureId(int &result, string procedureName);
+
+    static void getVariableId(int &result, string variableName);
+
+    static void getConstantId(int &result, int lineNum);
+
+    // DB ABSTRACTION
+
+    static void getStatementsIfParent(vector<string>& results, map<string, string>& myMap);
+
+    static void getStatementsIfParentT(vector<string>& results, map<string, string>& myMap);
+
+    static void getStatementsIfUses(vector<string>& results, map<string, string>& myMap);
+
+    static void getProcedureNamesIfUses(vector<string>& results, map<string, string>& myMap);
+
+    static bool parent(int lineNum1, int lineNum2);
+    static bool parent(string procedureName, int lineNum2);
+
+    static bool parentT(int lineNum1, int lineNum2);
+
+    static bool uses(int lineNum, string variableName);
+    static bool uses(string procedureName, string variableName);
 
 private:
 	// the connection pointer to the database

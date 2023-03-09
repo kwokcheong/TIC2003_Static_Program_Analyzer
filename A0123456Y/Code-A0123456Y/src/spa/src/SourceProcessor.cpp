@@ -3,6 +3,7 @@
 #include <string>
 #include <stack>
 #include <algorithm>
+#include <map>
 using namespace std;
 
 bool isNumber(string text){
@@ -26,17 +27,20 @@ bool contains(C&& c, T e) {
 };
 
 bool procedureExists(string procedureName){
-    int result = Database::getProcedureId(result, procedureName) > 0 ? 1 : 0;
+    int result = 0;
+    Database::getProcedureId(result, procedureName);
     return result;
 }
 
-bool variableExists(string variableName, string procedureName){
-    int result = Database::getVariableId(result, variableName, procedureName) > 0 ? 1 : 0;
+bool variableExists(string variableName){
+    int result = 0;
+    Database::getVariableId(result, variableName);
     return result;
 }
 
 bool constantExists(int lineNum){
-    int result = Database::getConstantId(result, lineNum) > 0 ? 1 : 0;
+    int result = 0;
+    Database::getConstantId(result, lineNum);
     return result;
 }
 
@@ -45,21 +49,21 @@ int getDatabaseId(int x, int lineNum, string procedureName, string variableName)
     switch(x){
         case 0: // 0 : Procedure
             if(procedureExists(procedureName)) {
-                result = Database::getProcedureId(result, procedureName);
+                Database::getProcedureId(result, procedureName);
                 return result;
             } else {
                 return -1;
             }
         case 1: // 1 : Variable
-            if(variableExists(variableName, procedureName)){
-                result = Database::getVariableId(result, variableName, procedureName);
+            if(variableExists(variableName)){
+                Database::getVariableId(result, variableName);
                 return result;
             } else {
                 return -1;
             }
         case 2: // 2 : Constant
             if(constantExists(lineNum)){
-                result = Database::getConstantId(result, lineNum);
+                Database::getConstantId(result, lineNum);
                 return result;
             } else {
                 return -1;
@@ -156,27 +160,27 @@ void SourceProcessor::process(string program) {
                     }
                 }
                 variableName = tokens.at(i-1);
-                if(!variableExists(variableName, procedureName)) { Database::insertVariable(variableName, procedureName); };
+                if(!variableExists(variableName)) { Database::insertVariable(variableName); };
                 Database::insertAssignment(currentLine);
                 statementType = "assign";
             }
         }
 
-        // note variables is also found after read
         if(tokens.at(i) == "read"){
             constantValue = -1;
             variableName = tokens.at(i + 1);
             statementType = tokens.at(i);
 
-            Database::insertVariable(variableName, procedureName);
+            if(!variableExists(variableName)) { Database::insertVariable(variableName); };
             Database::insertRead(currentLine);
         }
 
-        // NOTE: Need to add uses() here.
+        // TODO: Note that for call, this will not work, need to update
         if(tokens.at(i) == "print"){
             constantValue = -1;
             statementType = tokens.at(i);
             variableName = tokens.at(i+1);
+            if(!variableExists(variableName)) { Database::insertVariable(variableName); };
             Database::insertPrint(currentLine);
         }
 
@@ -202,4 +206,31 @@ void SourceProcessor::process(string program) {
             Database::insertConstants(currentLine, stoi(tokens.at(i)));
         }
     }
+
+    // TODO Test your code here
+    vector<string> databaseResults;
+    //map<std::string, string> parentMap;
+    //parentMap.insert(std::pair<std::string, string>("assign", "a"));
+    //parentMap.insert(std::pair<std::string, string>("while", "w"));
+    //parentMap.insert(std::pair<std::string, string>("select", "a"));
+
+    //Database::getStatementsIfParent(databaseResults, parentMap);
+
+
+    //map<std::string, string> prodMap;
+    //prodMap.insert(std::pair<std::string, string>("assign", "a"));
+    //prodMap.insert(std::pair<std::string, string>("procedure", "p"));
+    //prodMap.insert(std::pair<std::string, string>("select", "a"));
+    //prodMap.insert(std::pair<std::string, string>("value", "computeCentroid"));
+
+    //Database::getStatementsIfParentT(databaseResults, prodMap);
+
+    map<std::string, string> usesMap;
+    usesMap.insert(std::pair<std::string, string>("if", "i"));
+    usesMap.insert(std::pair<std::string, string>("variable", "v"));
+    usesMap.insert(std::pair<std::string, string>("select", "i"));
+    usesMap.insert(std::pair<std::string, string>("value", "cenX"));
+
+    Database::getProcedureNamesIfUses(databaseResults, usesMap);
+
 }

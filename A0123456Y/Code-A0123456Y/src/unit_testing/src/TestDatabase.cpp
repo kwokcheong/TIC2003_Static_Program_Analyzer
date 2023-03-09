@@ -41,8 +41,8 @@ namespace TestDatabase {
     TEST_CASE("CheckDatabaseVariables") {
         // initialize the database and insert a procedure
         Database::initialize();
-        Database::insertVariable("num1", "prod1");
-        Database::insertVariable("num2", "prod2");
+        Database::insertVariable("num1");
+        Database::insertVariable("num2");
 
         // retrieve the procedures from the database
         vector<string> dbResults;
@@ -68,8 +68,8 @@ namespace TestDatabase {
     TEST_CASE("CheckDatabaseConstants") {
         // initialize the database and insert a procedure
         Database::initialize();
-        Database::insertVariable("num2", "prod1");
-        Database::insertVariable("num3", "prod2");
+        Database::insertVariable("num2");
+        Database::insertVariable("num3");
 
         // retrieve the procedures from the database
         vector<string> dbResults;

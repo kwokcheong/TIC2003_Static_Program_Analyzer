@@ -419,7 +419,15 @@ src/spa/CMakeFiles/spa.dir/src/Database.cpp.o: /Users/kwokcheong/Desktop/nus_pro
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_types/_fsblkcnt_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_types/_fsfilcnt_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/_types/_nl_item.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__bsd_locale_defaults.h
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__bsd_locale_defaults.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/stack \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/deque \
+  /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Tokenizer.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree
 
 src/spa/CMakeFiles/spa.dir/src/QueryProcessor.cpp.o: /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.cpp \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.h \
@@ -787,7 +795,6 @@ src/spa/CMakeFiles/spa.dir/src/QueryProcessor.cpp.o: /Users/kwokcheong/Desktop/n
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__split_buffer \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Database.h \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/sqlite3.h \
-  /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Tokenizer.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/iostream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/ios \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__locale \
@@ -841,7 +848,15 @@ src/spa/CMakeFiles/spa.dir/src/QueryProcessor.cpp.o: /Users/kwokcheong/Desktop/n
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_types/_fsblkcnt_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_types/_fsfilcnt_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/_types/_nl_item.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__bsd_locale_defaults.h
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__bsd_locale_defaults.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/stack \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/deque \
+  /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Tokenizer.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree
 
 src/spa/CMakeFiles/spa.dir/src/SourceProcessor.cpp.o: /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/SourceProcessor.cpp \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/SourceProcessor.h \
@@ -1268,8 +1283,13 @@ src/spa/CMakeFiles/spa.dir/src/SourceProcessor.cpp.o: /Users/kwokcheong/Desktop/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/vector \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Database.h \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/sqlite3.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/iostream \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Tokenizer.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/iostream
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree
 
 src/spa/CMakeFiles/spa.dir/src/Tokenizer.cpp.o: /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Tokenizer.cpp \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/Tokenizer.h \
@@ -2080,6 +2100,12 @@ src/spa/CMakeFiles/spa.dir/src/sqlite3.c.o: /Users/kwokcheong/Desktop/nus_projec
 
 /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.cpp:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__bsd_locale_defaults.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/_types/_nl_item.h:
@@ -2496,6 +2522,8 @@ src/spa/CMakeFiles/spa.dir/src/sqlite3.c.o: /Users/kwokcheong/Desktop/nus_projec
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/map:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__iterator/move_iterator.h:
@@ -2607,6 +2635,8 @@ src/spa/CMakeFiles/spa.dir/src/sqlite3.c.o: /Users/kwokcheong/Desktop/nus_projec
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/atomic:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/_ctermid.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/concepts:
 

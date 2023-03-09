@@ -1,6 +1,7 @@
 #include "QueryProcessor.h"
 #include "Tokenizer.h"
 #include <iostream>
+#include <map>
 
 using namespace std;
 
@@ -45,6 +46,8 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
     }
 
     if (synonymType == "assign") {
+        //if (xxx == "while", 'if', 'procedure'){
+
         Database::getAssignments(databaseResults);
     }
 
