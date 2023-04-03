@@ -12,8 +12,8 @@ char* Database::errorMessage;
 
 // INITIALIZE DB
 void Database::initialize() {
-	// open a database connection and store the pointer into dbConnection
-	sqlite3_open("database.db", &dbConnection);
+    // open a database connection and store the pointer into dbConnection
+    sqlite3_open("database.db", &dbConnection);
 
     vector<string> tables = { "procedures", "variables", "assignments", "constants", "statements", "prints", "reads"};
 
@@ -23,8 +23,8 @@ void Database::initialize() {
     };
 
     // create a procedure table
-	string createProcedureTableSQL = "CREATE TABLE procedures (id INTEGER PRIMARY KEY AUTOINCREMENT, procedure_name VARCHAR(256) NOT NULL);";
-	sqlite3_exec(dbConnection, createProcedureTableSQL.c_str(), NULL, 0, &errorMessage);
+    string createProcedureTableSQL = "CREATE TABLE procedures (id INTEGER PRIMARY KEY AUTOINCREMENT, procedure_name VARCHAR(256) NOT NULL);";
+    sqlite3_exec(dbConnection, createProcedureTableSQL.c_str(), NULL, 0, &errorMessage);
 
     // create a variable table
     string createVariableTableSQL = "CREATE TABLE variables (id INTEGER PRIMARY KEY AUTOINCREMENT, variable_name varchar(256) NOT NULL);";
@@ -62,12 +62,12 @@ void Database::initialize() {
 
     // initialize the result vector
 
-	dbResults = vector<vector<string>>();
+    dbResults = vector<vector<string>>();
 }
 
 // CLOSE DB
 void Database::close() {
-	sqlite3_close(dbConnection);
+    sqlite3_close(dbConnection);
 }
 
 // HELPER METHODS FOR DATA ABSTRACTION
@@ -78,8 +78,8 @@ bool contains(C&& c, T e) {
 
 //INSERT DB
 void Database::insertProcedure(string procedureName) {
-	string insertProcedureSQL = "INSERT INTO procedures ('procedure_name') VALUES ('" + procedureName + "');";
-	sqlite3_exec(dbConnection, insertProcedureSQL.c_str(), NULL, 0, &errorMessage);
+    string insertProcedureSQL = "INSERT INTO procedures ('procedure_name') VALUES ('" + procedureName + "');";
+    sqlite3_exec(dbConnection, insertProcedureSQL.c_str(), NULL, 0, &errorMessage);
 }
 
 void Database::insertVariable(string variableName) {
@@ -118,16 +118,16 @@ void Database::insertConstants(int currentLine,int val) {
 
 //GET DB
 void Database::getProcedures(vector<string>& results){
-	dbResults.clear();
+    dbResults.clear();
 
-	string getProceduresSQL = "SELECT procedure_name FROM procedures;";
-	sqlite3_exec(dbConnection, getProceduresSQL.c_str(), callback, 0, &errorMessage);
+    string getProceduresSQL = "SELECT procedure_name FROM procedures;";
+    sqlite3_exec(dbConnection, getProceduresSQL.c_str(), callback, 0, &errorMessage);
 
-	for (vector<string> dbRow : dbResults) {
-		string result;
-		result = dbRow.at(0);
-		results.push_back(result);
-	}
+    for (vector<string> dbRow : dbResults) {
+        string result;
+        result = dbRow.at(0);
+        results.push_back(result);
+    }
 }
 
 void Database::getVariables(vector<string>& results){
@@ -214,7 +214,7 @@ void Database::getConstants(vector<string> &results) {
 
     // retrieve the procedures from the procedure table
     // The callback method is only used when there are results to be returned.
-    string getConstantsSQL = "SELECT * FROM constants;";
+    string getConstantsSQL = "SELECT DISTINCT value FROM constants;";
     sqlite3_exec(dbConnection, getConstantsSQL.c_str(), callback, 0, &errorMessage);
 
     // postprocess the results from the database so that the output is just a vector of procedure names
@@ -230,6 +230,19 @@ void Database::getIfStatementIds(vector<string> &results) {
 
     string getIfSQL = "SELECT id FROM statements where statement_type = 'if';";
     sqlite3_exec(dbConnection, getIfSQL.c_str(), callback, 0, &errorMessage);
+
+    for (vector<string> dbRow : dbResults) {
+        string result;
+        result = dbRow.at(0);
+        results.push_back(result);
+    }
+}
+
+void Database::getCallIds(vector<string> &results) {
+    dbResults.clear();
+
+    string getCallSQL = "SELECT id FROM statements where statement_type = 'call';";
+    sqlite3_exec(dbConnection, getCallSQL.c_str(), callback, 0, &errorMessage);
 
     for (vector<string> dbRow : dbResults) {
         string result;
@@ -625,20 +638,20 @@ bool Database::parentT(int lineNum1, int lineNum2){
     dbResults.clear();
     vector<string> keywords { "while", "if"};
     // early break cases
-        // lineNum1 should be smaller than lineNum2
+    // lineNum1 should be smaller than lineNum2
     if(lineNum1 >= lineNum2 ){ return 0; }
 
-        // get statement between lineNum1 and lineNum2
+    // get statement between lineNum1 and lineNum2
     string getStatementRange = "SELECT * FROM statements WHERE id BETWEEN '" + to_string(lineNum1) + "' AND '" + to_string(lineNum2) + "';";
     sqlite3_exec(dbConnection, getStatementRange.c_str(), callback, 0, &errorMessage);
 
-        // break if lineNum1 is not a container
+    // break if lineNum1 is not a container
     if(!contains(keywords, dbResults.at(0).at(1))) { return 0; };
 
     // start transitivity
-        // as long as there is no 0 between 3 and 7, not inclusive, return true
+    // as long as there is no 0 between 3 and 7, not inclusive, return true
     for (int i = 1; i < dbResults.size(); i++)  {
-      if(stoi(dbResults.at(i).at(6)) == 0){ return 0; };
+        if(stoi(dbResults.at(i).at(6)) == 0){ return 0; };
     }
 
     return 1;
@@ -814,18 +827,18 @@ bool Database::modifies(string procedureName, string variableName) {
 // callback method to put one row of results from the database into the dbResults vector
 // This method is called each time a row of results is returned from the database
 int Database::callback(void* NotUsed, int argc, char** argv, char** azColName) {
-	NotUsed = 0;
-	vector<string> dbRow;
+    NotUsed = 0;
+    vector<string> dbRow;
 
-	// argc is the number of columns for this row of results
-	// argv contains the values for the columns
-	// Each value is pushed into a vector.
-	for (int i = 0; i < argc; i++) {
-		dbRow.push_back(argv[i]);
-	}
+    // argc is the number of columns for this row of results
+    // argv contains the values for the columns
+    // Each value is pushed into a vector.
+    for (int i = 0; i < argc; i++) {
+        dbRow.push_back(argv[i]);
+    }
 
-	// The row is pushed to the vector for storing all rows of results 
-	dbResults.push_back(dbRow);
+    // The row is pushed to the vector for storing all rows of results
+    dbResults.push_back(dbRow);
 
-	return 0;
+    return 0;
 }

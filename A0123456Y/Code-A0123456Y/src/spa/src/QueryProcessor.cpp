@@ -72,26 +72,26 @@ void retrieveDatabase(string command, string synonym, map<string, string>& myMap
         if(synonym == "stmt"){ Database::getStatements(databaseResults); }
         if(synonym == "constant"){ Database::getConstants(databaseResults); }
         if(synonym == "if"){ Database::getIfStatementIds(databaseResults); }
-        if(synonym == "while"){ Database::getWhileStatementIds(databaseResults);
-        }
+        if(synonym == "while"){ Database::getWhileStatementIds(databaseResults); }
+        if(synonym == "call"){ Database::getCallIds(databaseResults); }
     }
 }
 
 void QueryProcessor::evaluate(string query, vector<string>& output) {
-	// clear the output vector
-	output.clear();
+    // clear the output vector
+    output.clear();
 
-	// tokenize the query
-	Tokenizer tk;
-	vector<string> tokens;
+    // tokenize the query
+    Tokenizer tk;
+    vector<string> tokens;
     map<string, string> myMap;
-	tk.tokenize(query, tokens);
+    tk.tokenize(query, tokens);
 
-	// check what type of synonym is being declared
-	string synonymType = tokens.at(0);
+    // check what type of synonym is being declared
+    string synonymType = tokens.at(0);
 
-	// create a vector for storing the results from database
-	vector<string> databaseResults;
+    // create a vector for storing the results from database
+    vector<string> databaseResults;
     vector<string> synonymLine;
     vector<string> skip = { ";", "such", "that"};
     int selectIndex = 0;
@@ -165,15 +165,15 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
         }
     }
 
-	// call the method in database to retrieve the results
+    // call the method in database to retrieve the results
     retrieveDatabase(command, synonymType, myMap, databaseResults);
 
     for (const auto& [key, value] : myMap) {
         std::cout << "Key: " << key << ", Value: " << value << std::endl;
     }
 
-	// post process the results to fill in the output vector
-	for (string databaseResult : databaseResults) {
-		output.push_back(databaseResult);
-	}
+    // post process the results to fill in the output vector
+    for (string databaseResult : databaseResults) {
+        output.push_back(databaseResult);
+    }
 }

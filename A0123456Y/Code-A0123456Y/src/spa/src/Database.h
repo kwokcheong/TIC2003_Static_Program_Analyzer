@@ -15,14 +15,14 @@ using namespace std;
 // It is advisable to just add the insert / get functions based on the given examples.
 class Database {
 public:
-	// INITIALIZE DB
-	static void initialize();
+    // INITIALIZE DB
+    static void initialize();
 
-	// CLOSE DB
-	static void close();
+    // CLOSE DB
+    static void close();
 
-	// INSERT DB
-	static void insertProcedure(string procedureName);
+    // INSERT DB
+    static void insertProcedure(string procedureName);
 
     static void insertVariable(string variableName);
 
@@ -36,8 +36,8 @@ public:
 
     static void insertConstants(int lineNum, int val);
 
-	// GET DB
-	static void getProcedures(vector<string>& results);
+    // GET DB
+    static void getProcedures(vector<string>& results);
 
     static void getVariables(vector<string>& results);
 
@@ -54,6 +54,8 @@ public:
     static void getIfStatementIds(vector<string> &results);
 
     static void getWhileStatementIds(vector<string> &results);
+
+    static void getCallIds(vector<string> &results);
 
     static void getProcedureId(int &result, string procedureName);
 
@@ -90,14 +92,13 @@ public:
     static bool modifies(string procedureName, string variableName);
 
 private:
-	// the connection pointer to the database
-	static sqlite3* dbConnection; 
-	// a vector containing the results from the database
-	static vector<vector<string>> dbResults; 
-	// the error message from the database
-	static char* errorMessage;
-	// callback method to put one row of results from the database into the dbResults vector
-	// This method is called each time a row of results is returned from the database
-	static int callback(void* NotUsed, int argc, char** argv, char** azColName);
+    // the connection pointer to the database
+    static sqlite3* dbConnection;
+    // a vector containing the results from the database
+    static vector<vector<string>> dbResults;
+    // the error message from the database
+    static char* errorMessage;
+    // callback method to put one row of results from the database into the dbResults vector
+    // This method is called each time a row of results is returned from the database
+    static int callback(void* NotUsed, int argc, char** argv, char** azColName);
 };
-

@@ -1,0 +1,50 @@
+1 - select all procedures
+procedure p;
+Select p
+echo
+5000
+2 - select all variables
+variable v;
+Select v
+num1, index
+5000
+3 - select all constant
+constant c;
+Select c
+none
+5000
+4 - assignment statements
+assign a;
+Select a
+2
+5000
+5 - print statements
+print pr;
+Select pr
+3, 4
+5000
+6 - read statements
+read rd;
+Select rd
+1
+5000
+7 - Statement
+stmt s;
+Select s
+1, 2, 3, 4
+5000
+8 - while statements
+while w;
+Select w
+none
+5000
+9 - if statements
+if ifs;
+Select ifs
+none
+5000
+10 - call statements
+call c;
+Select c
+none
+5000

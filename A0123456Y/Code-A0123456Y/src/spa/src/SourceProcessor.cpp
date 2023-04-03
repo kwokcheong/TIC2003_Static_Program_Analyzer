@@ -73,18 +73,19 @@ int getDatabaseId(int x, int lineNum, string procedureName, string variableName)
 }
 
 void SourceProcessor::process(string program) {
-	// initialize the database
-	Database::initialize();
+    // initialize the database
+    Database::initialize();
 
-	// tokenize the program
-	Tokenizer tk;
-	vector<string> tokens;
-	tk.tokenize(program, tokens);
+    // tokenize the program
+    Tokenizer tk;
+    vector<string> tokens;
+    tk.tokenize(program, tokens);
 
     // Initialize standard variables
     vector<string> keywords { "while", "if"};
-    vector<string> conditional { "!", "=", ">", "<", "%", "*", "+", "-"  };
-    bool constantFlag = true;
+    vector<string> conditional { "!", "=", ">", "<", "%", "*", "+", "-", "/"};
+    // This vector contains special symbols that is always tied with the keywords before {
+    vector<string> conditional_symbols { ")", "then"};
     int constantValue = -1;
     int currentLine = 1;
     int parentLine = 0;
@@ -95,53 +96,51 @@ void SourceProcessor::process(string program) {
     // Note to self: I want to make this a switch case instead, but can do it next iteration
     for(int i = 0; i < tokens.size(); i++){
         string current_token = tokens.at(i);
-
         // This method adds for constants
         // Check if while, if (), block the ( x > 3 ) part
-        if(contains(keywords, tokens.at(i))){
-            statementType = tokens.at(i);
+        if(contains(keywords, current_token)){
+            statementType = current_token;
             variableName = "";
-            constantValue = -1;
-            //parentLine = currentLine;
-            constantFlag = false;
 
             if(tokens.at(i+1) == "("){
                 expressionValue = tokens.at(i+1);
                 int flag = 1;
                 int j = 1;
                 while(flag > 0){
-                    if(tokens.at(i+j+1) == "(") { flag++; }
-                    if(tokens.at(i+j+1) == ")") { flag--; }
+                    if(tokens.at(i+j+1) == "(") { flag++;}
+                    if(tokens.at(i+j+1) == ")") { flag--;}
                     expressionValue += tokens.at(i+j+1);
                     j++;
                 }
             }
         }
 
-        if(tokens.at(i) == "else"){
+        if(current_token == "else"){
             parentStack.push(ifStatementStack.top());
             ifStatementStack.pop();
         }
 
-        if(tokens.at(i) == ";" || contains(keywords, tokens.at(i))){
+        if(current_token == ";" || (current_token == "{" && contains(conditional_symbols, tokens.at(i-1)))){
             int procedure_id = getDatabaseId(0,currentLine, procedureName, variableName);
             int variable_id = (variableName != "") ? getDatabaseId(1,currentLine, procedureName, variableName) : -1;
             int constant_id = (constantValue > -1) ? getDatabaseId(2, currentLine, procedureName, variableName) : -1;
             parentLine = parentStack.size() > 0 ? parentStack.top() : 0;
             Database::insertStatement(currentLine, statementType, procedure_id, variable_id, constant_id, expressionValue, parentLine);
-            if(contains(keywords, tokens.at(i))) {
-                if(tokens.at(i) == "if"){
-                    ifStatementStack.push(currentLine);
-                }
-                parentStack.push(currentLine);
-            }
+
             currentLine += 1;
             statementType = "";
             expressionValue = "";
             constantValue = -1;
         }
 
-        if(tokens.at(i) == "procedure"){
+        if(contains(keywords, current_token)) {
+            if(current_token == "if"){
+                ifStatementStack.push(currentLine);
+            }
+            parentStack.push(currentLine);
+        }
+
+        if(current_token == "procedure"){
             statementType = "procedure";
             constantValue = -1;
             variableName = "";
@@ -150,7 +149,7 @@ void SourceProcessor::process(string program) {
         }
 
         // This method adds for assignment and variables
-        if(tokens.at(i) == "="){
+        if(current_token == "="){
             if(!contains(conditional, tokens.at(i-1)) && tokens.at(i+1) != "="){
                 if(tokens.at(i+2) != ";") {
                     int j = 1;
@@ -166,44 +165,39 @@ void SourceProcessor::process(string program) {
             }
         }
 
-        if(tokens.at(i) == "read"){
+        if(current_token == "read"){
             constantValue = -1;
             variableName = tokens.at(i + 1);
-            statementType = tokens.at(i);
+            statementType = current_token;
 
             if(!variableExists(variableName)) { Database::insertVariable(variableName); };
             Database::insertRead(currentLine);
         }
 
         // TODO: Note that for call, this will not work, need to update
-        if(tokens.at(i) == "print"){
+        if(current_token == "print"){
             constantValue = -1;
-            statementType = tokens.at(i);
+            statementType = current_token;
             variableName = tokens.at(i+1);
             if(!variableExists(variableName)) { Database::insertVariable(variableName); };
             Database::insertPrint(currentLine);
         }
 
-        if(tokens.at(i) == "call"){
+        if(current_token == "call"){
             constantValue = -1;
             variableName = "";
-            statementType = tokens.at(i);
-        }
-
-        // once while() { , then unblock
-        if ( tokens.at(i) == "{" ) {
-            constantFlag = true;
+            statementType = current_token;
         }
 
         if(!parentStack.empty()){
-            if(tokens.at(i) == "}"){
+            if(current_token == "}"){
                 parentStack.pop();
             }
         }
 
-        if(isNumber(tokens.at(i)) && constantFlag ) {
-            constantValue = stoi(tokens.at(i));
-            Database::insertConstants(currentLine, stoi(tokens.at(i)));
+        if(isNumber(current_token) ) {
+            constantValue = stoi(current_token);
+            Database::insertConstants(currentLine, stoi(current_token));
         }
     }
 }
