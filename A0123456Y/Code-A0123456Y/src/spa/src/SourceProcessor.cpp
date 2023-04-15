@@ -91,7 +91,7 @@ void SourceProcessor::process(string program) {
     int parentLine = 0;
     stack<int> parentStack;
     stack<int> ifStatementStack;
-    string procedureName, variableName, statementType, expressionValue  = "";
+    string procedureName, variableName, statementType, expressionValue, callProcedureName  = "";
 
     // Note to self: I want to make this a switch case instead, but can do it next iteration
     for(int i = 0; i < tokens.size(); i++){
@@ -101,6 +101,7 @@ void SourceProcessor::process(string program) {
         if(contains(keywords, current_token)){
             statementType = current_token;
             variableName = "";
+            callProcedureName = "";
 
             if(tokens.at(i+1) == "("){
                 expressionValue = tokens.at(i+1);
@@ -125,7 +126,7 @@ void SourceProcessor::process(string program) {
             int variable_id = (variableName != "") ? getDatabaseId(1,currentLine, procedureName, variableName) : -1;
             int constant_id = (constantValue > -1) ? getDatabaseId(2, currentLine, procedureName, variableName) : -1;
             parentLine = parentStack.size() > 0 ? parentStack.top() : 0;
-            Database::insertStatement(currentLine, statementType, procedure_id, variable_id, constant_id, expressionValue, parentLine);
+            Database::insertStatement(currentLine, statementType, procedure_id, variable_id, constant_id, expressionValue,callProcedureName, parentLine);
 
             currentLine += 1;
             statementType = "";
@@ -144,6 +145,7 @@ void SourceProcessor::process(string program) {
             statementType = "procedure";
             constantValue = -1;
             variableName = "";
+            callProcedureName = "";
             procedureName = tokens.at(i + 1);
             Database::insertProcedure(procedureName);
         }
@@ -169,6 +171,7 @@ void SourceProcessor::process(string program) {
             constantValue = -1;
             variableName = tokens.at(i + 1);
             statementType = current_token;
+            callProcedureName = "";
 
             if(!variableExists(variableName)) { Database::insertVariable(variableName); };
             Database::insertRead(currentLine);
@@ -178,6 +181,7 @@ void SourceProcessor::process(string program) {
         if(current_token == "print"){
             constantValue = -1;
             statementType = current_token;
+            callProcedureName = "";
             variableName = tokens.at(i+1);
             if(!variableExists(variableName)) { Database::insertVariable(variableName); };
             Database::insertPrint(currentLine);
@@ -187,6 +191,7 @@ void SourceProcessor::process(string program) {
             constantValue = -1;
             variableName = "";
             statementType = current_token;
+            callProcedureName = tokens.at(i + 1);
         }
 
         if(!parentStack.empty()){

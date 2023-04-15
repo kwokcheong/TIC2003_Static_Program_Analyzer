@@ -32,7 +32,7 @@ public:
 
     static void insertPrint(int lineNUM);
 
-    static void insertStatement(int currentLine, string statementType, int procedureId, int variableId, int constantId, string expressionValue, int parent_line_num);
+    static void insertStatement(int currentLine, string statementType, int procedureId, int variableId, int constantId, string expressionValue, string call_procedure_name, int parent_line_num);
 
     static void insertConstants(int lineNum, int val);
 
@@ -90,6 +90,10 @@ public:
     static bool modifies(int lineNum, string variableName);
 
     static bool modifies(string procedureName, string variableName);
+
+    static bool calls(string procedureName1, string procedureName2);
+
+    //static bool callsT();
 
 private:
     // the connection pointer to the database

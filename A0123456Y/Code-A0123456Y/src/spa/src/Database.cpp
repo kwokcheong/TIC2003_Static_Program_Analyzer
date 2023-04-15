@@ -45,6 +45,7 @@ void Database::initialize() {
                                       "variable_id INT,\n"
                                       "constant_id INT,\n"
                                       "expression VARCHAR(256), \n"
+                                      "call_procedure_name VARCHAR(256),\n"
                                       "parent_line_num INT,\n"
                                       "FOREIGN KEY(procedure_id) REFERENCES procedures(id)\n"
                                       "FOREIGN KEY(variable_id) REFERENCES variables(id)\n"
@@ -102,11 +103,11 @@ void Database::insertPrint(int currentLine) {
     sqlite3_exec(dbConnection, insertPrintsSQL.c_str(), NULL, 0, &errorMessage);
 }
 
-void Database::insertStatement(int currentLine, string statementType, int procedureId, int variableId, int constantId, string expressionValue, int parent_line_num) {
+void Database::insertStatement(int currentLine, string statementType, int procedureId, int variableId, int constantId, string expressionValue, string call_procedure_name, int parent_line_num) {
 
     //string insertStatementSQL = "INSERT INTO statements ('statement_type','procedure_id', 'variable_id', 'constant_id', 'expression', 'parent_line_num) VALUES ('" + statementType + "', '" + to_string(procedureId) + "', '"+ to_string(variableId) + "', '" + to_string(constantId) + "', '" + expressionValue + "', '" + to_string(parent_line_num) + "' );";
-    string insertStatementSQL = "INSERT INTO statements ('id', 'statement_type', 'procedure_id', 'variable_id', 'constant_id', 'expression', 'parent_line_num') "
-                                "VALUES ('" + to_string(currentLine) + "', '" + statementType + "', '" + to_string(procedureId) + "', '" + to_string(variableId) + "', '" + to_string(constantId) + "', '" + expressionValue + "', '" + to_string(parent_line_num) + "')";
+    string insertStatementSQL = "INSERT INTO statements ('id', 'statement_type', 'procedure_id', 'variable_id', 'constant_id', 'expression', 'call_procedure_name', 'parent_line_num') "
+                                "VALUES ('" + to_string(currentLine) + "', '" + statementType + "', '" + to_string(procedureId) + "', '" + to_string(variableId) + "', '" + to_string(constantId) + "', '" + expressionValue + "', '" + call_procedure_name + "', '"+ to_string(parent_line_num) + "')";
 
     sqlite3_exec(dbConnection, insertStatementSQL.c_str(), NULL, 0, &errorMessage);
 }
@@ -822,6 +823,11 @@ bool Database::modifies(string procedureName, string variableName) {
         }
     }
     return 0;
+}
+
+bool Database::calls(string procedureName1, string procedureName2){
+    dbResult.clear();
+    string getStatementIds
 }
 
 // callback method to put one row of results from the database into the dbResults vector
