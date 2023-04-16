@@ -77,6 +77,10 @@ public:
 
     static void getProcedureNamesIfModifies(vector<string>& results, map<string, string>& myMap);
 
+    static void getProcedureNamesIfCalls(vector<string>& results, map<string, string>& myMap);
+
+    static void getProcedureNamesIfCallsT(vector<string>& results, map<string, string>& myMap);
+
     static bool parent(int lineNum1, int lineNum2);
 
     static bool parent(string procedureName, int lineNum2);
@@ -92,8 +96,6 @@ public:
     static bool modifies(string procedureName, string variableName);
 
     static bool calls(string procedureName1, string procedureName2);
-
-    //static bool callsT();
 
 private:
     // the connection pointer to the database

@@ -35,9 +35,6 @@ void addToMap(map<string, string>& myMap, vector<string> synonymLine){
 
 void retrieveDatabase(string command, string synonym, map<string, string>& myMap, vector<string>& databaseResults ){
     if(command == "parentT") {
-        for (const auto& [key, value] : myMap) {
-            std::cout << "Key: " << key << ", Value: " << value << std::endl;
-        }
         Database::getStatementsIfParentT(databaseResults, myMap);
     }
 
@@ -61,6 +58,14 @@ void retrieveDatabase(string command, string synonym, map<string, string>& myMap
         }else {
             Database::getStatementsIfModifies(databaseResults, myMap);
         }
+    }
+
+    if(command == "calls") {
+        Database::getProcedureNamesIfCalls(databaseResults, myMap);
+    }
+
+    if(command == "callsT") {
+        Database::getProcedureNamesIfCallsT(databaseResults, myMap);
     }
 
     if(command == "all"){
@@ -96,7 +101,7 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
     vector<string> skip = { ";", "such", "that"};
     int selectIndex = 0;
 
-    // create the base map body for calling database get requests
+    // create the base map body for calling database get request
     for(int i = 0; i<tokens.size(); i++){
         synonymLine.push_back(tokens[i]);
         if(tokens[i+1] == ";"){ // this will add all the synonyms
@@ -105,7 +110,7 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
             synonymLine.clear();
         }
 
-        if(tokens.at(i) == "select"){ // this will add the select statement
+        if(tokens.at(i) == "Select" || tokens.at(i) == "select"){ // this will add the select statement
             synonymLine.clear();
             synonymLine.push_back(tokens.at(i));
             synonymLine.push_back(tokens.at(i+1));
@@ -120,6 +125,7 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
     string command = "all";
     for(int i = selectIndex; i<tokens.size(); i++){
         //iteration 2 remains simple. To handle for only 1 abstraction.
+        string value = "";
         if(tokens.at(i) == "that"){
             if(tokens.at(i+1) == "Parent"){
                 if(tokens.at(i+2) == "*"){
@@ -158,7 +164,29 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
                 addToMap(myMap, synonymLine);
                 synonymLine.clear();
             }
-
+            if(tokens.at(i+1) == "Calls"){
+                if(tokens.at(i+2) == "*"){
+                    command = "callsT";
+                    synonymLine.clear();
+                    for(int j = 3; tokens.at(i + 1 + j) != ")" ; j++){
+                        value += tokens.at(i + 1 + j);
+                    }
+                    synonymLine.push_back("value");
+                    synonymLine.push_back(value);
+                    addToMap(myMap, synonymLine);
+                    synonymLine.clear();
+                }else {
+                    command = "calls";
+                    synonymLine.clear();
+                    for(int j = 2; tokens.at(i + 1 + j) != ")" ; j++){
+                        value += tokens.at(i + 1 + j);
+                    }
+                    synonymLine.push_back("value");
+                    synonymLine.push_back(value);
+                    addToMap(myMap, synonymLine);
+                    synonymLine.clear();
+                }
+            }
         }
         if(tokens.at(i) == "Pattern"){
             // do something
@@ -168,9 +196,9 @@ void QueryProcessor::evaluate(string query, vector<string>& output) {
     // call the method in database to retrieve the results
     retrieveDatabase(command, synonymType, myMap, databaseResults);
 
-    for (const auto& [key, value] : myMap) {
-        std::cout << "Key: " << key << ", Value: " << value << std::endl;
-    }
+    //for (const auto& [key, value] : myMap) {
+    //    std::cout << "Key: " << key << ", Value: " << value << std::endl;
+    //}
 
     // post process the results to fill in the output vector
     for (string databaseResult : databaseResults) {

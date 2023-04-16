@@ -427,7 +427,8 @@ src/spa/CMakeFiles/spa.dir/src/Database.cpp.o: /Users/kwokcheong/Desktop/nus_pro
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__functional/is_transparent.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__node_handle \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/optional \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/sstream
 
 src/spa/CMakeFiles/spa.dir/src/QueryProcessor.cpp.o: /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.cpp \
   /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.h \
@@ -2094,11 +2095,11 @@ src/spa/CMakeFiles/spa.dir/src/sqlite3.c.o: /Users/kwokcheong/Desktop/nus_projec
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/fstream:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/sstream:
-
 /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.h:
 
 /Users/kwokcheong/Desktop/nus_projects/TIC2003_Static_Program_Analyzer/A0123456Y/Code-A0123456Y/src/spa/src/QueryProcessor.cpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/sstream:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/include/c++/v1/__tree:
 

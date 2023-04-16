@@ -3,6 +3,10 @@
 #include <iostream>
 #include <typeinfo>
 #include <map>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -76,6 +80,45 @@ template<typename C, typename T>
 bool contains(C&& c, T e) {
     return find(begin(c), end(c), e) != end(c);
 };
+
+vector<string> split(const string& str, char delimiter) {
+    vector<string> tokens;
+    stringstream ss(str);
+    string token;
+
+    while (getline(ss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
+
+int index_of_double_quotes(vector<string> vector) {
+    for (int i = 0; i < vector.size(); i++) {
+        if (vector[i].find("\"") != string::npos) {
+            return i;
+        }
+    }
+    return -1; // Return -1 if no string contains double quotes
+}
+
+int index_of_underscore(vector<string> vector) {
+    for (int i = 0; i < vector.size(); i++) {
+        if (vector[i] == "_") {
+            return i;
+        }
+    }
+    return -1; // Return -1 if string is not _
+}
+
+string remove_double_quotes(std::string str) {
+    std::size_t pos = std::string::npos;
+    while ((pos = str.find("\"")) != std::string::npos) {
+        str.erase(pos, 1);
+    }
+    return str;
+}
+
 
 //INSERT DB
 void Database::insertProcedure(string procedureName) {
@@ -600,6 +643,117 @@ void Database::getProcedureNamesIfModifies(vector<string>& results, map<string, 
     }
 };
 
+void Database::getProcedureNamesIfCalls(vector<string>& results, map<string, string>& myMap){
+    // This should return the procedure name if it calls the procedure
+    dbResults.clear();
+    // if there is no quote  " ", assume it is open variable.
+    // map should contain 2 procedure.
+    vector<string> procedure_names;
+    Database::getProcedures(procedure_names);
+    dbResults.clear();
+
+    vector<std::string> value = split(myMap["value"], ',');
+    int index = index_of_double_quotes(value);
+    int index_2 = -1;
+    if(index == -1){
+        index_2 = index_of_underscore(value);
+    }
+
+
+    // this will get all call statements
+    string getCallStatements = "SELECT DISTINCT procedure_id, call_procedure_name FROM statements WHERE statement_type = \"call\"";
+    sqlite3_exec(dbConnection, getCallStatements.c_str(), callback, 0, &errorMessage);
+    vector<vector<string>> callResults = dbResults;
+    string result = "";
+    for(vector<string> row : callResults){
+        result = "";
+        if(index != -1){
+            string compare_value = remove_double_quotes(value.at(index));
+            if(index == 1){
+                // 2. calls(P, "Compute_centroid")
+                if (Database::calls(procedure_names.at(stoi(row.at(0)) - 1), compare_value)){
+                    result += procedure_names.at(stoi(row.at(0)) - 1);
+                    results.push_back(result);
+                }
+            }
+            if(index == 0){
+                // 3. calls("Compute_centroid" , P)
+                int id = 0;
+                Database::getProcedureId(id, compare_value);
+                if(stoi(row.at(0)) == id) {
+                    results.push_back(row.at(1));
+                }
+            }
+        } else if(index_2 != -1){
+            if(index_2 == 1){
+                result += procedure_names.at(stoi(row.at(0)) - 1);
+                results.push_back(result);
+            }
+            // calls(_,P)
+            if(index_2 == 0){
+                result += row.at(1);
+                results.push_back(result);
+            }
+        }
+        else {
+            // 1: calls(P,Q)
+            result += procedure_names.at(stoi(row.at(0)) - 1) + " " + row.at(1);
+            results.push_back(result);
+        }
+    }
+};
+
+void Database::getProcedureNamesIfCallsT(vector<string>& results, map<string, string>& myMap){
+    // This should return the procedure name if it transitively or normally calls the procedure
+    dbResults.clear();
+    // if there is no quote  " ", assume it is open variable.
+    // map should contain 2 procedure.
+    vector<string> procedure_names;
+    Database::getProcedures(procedure_names);
+    dbResults.clear();
+
+    vector<std::string> value = split(myMap["value"], ',');
+    stack<string> s;
+    int index = index_of_double_quotes(value);
+    int index_2 = -1;
+    if(index == -1){
+        index_2 = index_of_underscore(value);
+    }
+
+
+    // this will get all call statements
+    string getCallStatements = "SELECT DISTINCT procedure_id, call_procedure_name FROM statements WHERE statement_type = \"call\"";
+    sqlite3_exec(dbConnection, getCallStatements.c_str(), callback, 0, &errorMessage);
+    vector<vector<string>> callResults = dbResults;
+    string result = "";
+    for(vector<string> row : callResults){
+        result = "";
+        if(index != -1){
+            string compare_value = remove_double_quotes(value.at(index));
+            if(index == 1){
+                // 2. Calls*(p, "readPoint") => computeCentroid, main
+                if (Database::calls(procedure_names.at(stoi(row.at(0)) - 1), compare_value)){
+                    result += procedure_names.at(stoi(row.at(0)) - 1);
+                    results.push_back(result);
+                }
+            }
+            if(index == 0){
+                // 3. Calls*("main", p) => computeCentroid, printResults, readPoint
+
+            }
+        } else if(index_2 != -1){
+            if(index_2 == 1){
+            }
+            // calls(_,P)
+            if(index_2 == 0){
+            }
+        }
+        else {
+            // 1: calls(P,Q)
+        }
+    }
+};
+
 // DB ABSTRACTION METHODS
 bool Database::parent(int lineNum1, int lineNum2){
     dbResults.clear();
@@ -799,7 +953,6 @@ bool Database::modifies(int lineNum, string variableName) {
     }
     return 0;
 }
-
 bool Database::modifies(string procedureName, string variableName) {
     dbResults.clear();
     Tokenizer tk;
@@ -826,8 +979,24 @@ bool Database::modifies(string procedureName, string variableName) {
 }
 
 bool Database::calls(string procedureName1, string procedureName2){
-    dbResult.clear();
-    string getStatementIds
+    // This method's purpose is only to return true or false if the provided P1 calls P2, both must be a name!
+    // P1 should be the one calling P2.
+    dbResults.clear();
+    int id = 0;
+    Database::getProcedureId(id, procedureName1);
+    dbResults.clear();
+
+    string getCallStatements = "SELECT * FROM statements WHERE statement_type = \"call\" and procedure_id = '" + to_string(id) + "';";
+    sqlite3_exec(dbConnection, getCallStatements.c_str(), callback, 0, &errorMessage);
+
+    for(vector<string> row : dbResults){
+        cout << "COMPARE THIS: " << row.at(6) << endl;
+        if(row.at(6) == procedureName2){
+            return 1;
+        }
+    }
+
+    return 0;
 }
 
 // callback method to put one row of results from the database into the dbResults vector

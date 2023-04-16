@@ -1,97 +1,75 @@
 <?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
 <test_results>
 <info>
-<name>autotester</name><parsing_time_taken>33.425000</parsing_time_taken>
+<name>autotester</name><parsing_time_taken>24.887000</parsing_time_taken>
 </info>
 <queries>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Procedure">1</id><querystr><![CDATA[procedure p; Select p]]></querystr>
-<stuans>main,readPoint,printResults,computeCentroid</stuans>
-<correct>main,readPoint,print1Results,computeCentroid</correct>
-<time_taken>0.431000</time_taken>
-<failed>
-<missing>print1Results</missing>
-<additional>printResults</additional>
-<summary>
-<expected>4</expected>
-<matched>3</matched>
-<missing>1</missing>
-<additional>1</additional>
-</summary>
-</failed>
-</query>
-<query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Variable">2</id><querystr><![CDATA[variable v; Select v]]></querystr>
-<stuans>flag,x,y,cenX,cenY,normSq,count</stuans>
-<correct>flag,x,y,cenX,cenY,normSq,count</correct>
-<time_taken>0.342000</time_taken>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="O">12</id><querystr><![CDATA[procedure p; Select p such that Calls(_, p)]]></querystr>
+<stuans>computeCentroid,printResults,readPoint</stuans>
+<correct>computeCentroid,printResults,readPoint</correct>
+<time_taken>0.379000</time_taken>
 <passed/>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Constant">3</id><querystr><![CDATA[constant c; Select c]]></querystr>
-<stuans>0,1</stuans>
-<correct>1,1,0,0,0,0</correct>
-<time_taken>0.318000</time_taken>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="O">13</id><querystr><![CDATA[procedure p; Select p such that Calls(p, _)]]></querystr>
+<stuans>main,main,computeCentroid</stuans>
+<correct>main,computeCentroid</correct>
+<time_taken>0.531000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="O">14</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "computeCentroid")]]></querystr>
+<stuans>main,main</stuans>
+<correct>main</correct>
+<time_taken>0.501000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="O">15</id><querystr><![CDATA[procedure p; Select p such that Calls("computeCentroid", p)]]></querystr>
+<stuans>readPoint</stuans>
+<correct>readPoint</correct>
+<time_taken>0.556000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="O">16</id><querystr><![CDATA[procedure p, q; Select <p, q> such that Calls(p, q)]]></querystr>
+<stuans>main computeCentroid,main printResults,computeCentroid readPoint</stuans>
+<correct>main computeCentroid,main printResults,computeCentroid readPoint</correct>
+<time_taken>0.402000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="O">17</id><querystr><![CDATA[procedure p; Select  p such that Calls*(p, "readPoint")]]></querystr>
+<stuans></stuans>
+<correct>computeCentroid,main</correct>
+<time_taken>0.308000</time_taken>
 <failed>
-<missing>0,0,0,1</missing>
+<missing>computeCentroid,main</missing>
 <additional></additional>
 <summary>
-<expected>6</expected>
-<matched>2</matched>
-<missing>4</missing>
+<expected>2</expected>
+<matched>0</matched>
+<missing>2</missing>
 <additional>0</additional>
 </summary>
 </failed>
 </query>
 <query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Assignment">4</id><querystr><![CDATA[assign a; while w; Select a]]></querystr>
-<stuans>1,10,11,12,15,16,20,21,22,23</stuans>
-<correct>1,10,11,12,15,16,17,20,21,22,23</correct>
-<time_taken>0.301000</time_taken>
+<id ReturnTuple="1" Callsstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="O">18</id><querystr><![CDATA[procedure p; Select  p such that Calls*("main", p)]]></querystr>
+<stuans></stuans>
+<correct>computeCentroid,printResults,readPoint</correct>
+<time_taken>0.252000</time_taken>
 <failed>
-<missing>17</missing>
+<missing>computeCentroid,printResults,readPoint</missing>
 <additional></additional>
 <summary>
-<expected>11</expected>
-<matched>10</matched>
-<missing>1</missing>
+<expected>3</expected>
+<matched>0</matched>
+<missing>3</missing>
 <additional>0</additional>
 </summary>
 </failed>
-</query>
-<query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Print">5</id><querystr><![CDATA[print pr; Select pr]]></querystr>
-<stuans>6,7,8,9,17</stuans>
-<correct>6,7,8,9</correct>
-<time_taken>0.298000</time_taken>
-<failed>
-<missing></missing>
-<additional>17</additional>
-<summary>
-<expected>4</expected>
-<matched>4</matched>
-<missing>0</missing>
-<additional>1</additional>
-</summary>
-</failed>
-</query>
-<query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Read">6</id><querystr><![CDATA[read rd; Select rd]]></querystr>
-<stuans>4,5</stuans>
-<correct>4,5</correct>
-<time_taken>0.271000</time_taken>
-<passed/>
-</query>
-<query>
-<id ReturnTuple="1" CondNum="1" RelNum="0" comment="Statement">7</id><querystr><![CDATA[stmt s; Select s]]></querystr>
-<stuans>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23</stuans>
-<correct>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23</correct>
-<time_taken>0.361000</time_taken>
-<passed/>
-</query>
-<query>
-<id ReturnTuple="1" Parentstar="1" SuchThat="1" CondNum="3" RelNum="1" comment="Parent*">8</id><querystr><![CDATA[assign a; while w; Select a such that Parent*(w,a)]]></querystr>
-<exception/>
 </query>
 </queries>
 </test_results>
